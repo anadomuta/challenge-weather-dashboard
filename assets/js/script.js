@@ -1,9 +1,10 @@
 $(document).ready(function () {
   var searchButton = $("#search-button");
   var cityInput = $("#search-input");
-  var ul = $("<ul>");
+  var citiesButtons = $("#history");
+  //   var ul = $("<ul>");
 
-  $("#history").append(ul);
+  //   $("#history").append(ul);
 
   // Initialize Local Storage and Retrieve Cities from Local Storage
   function initLS() {
@@ -31,9 +32,15 @@ $(document).ready(function () {
     cityfromLS = JSON.parse(localStorage.getItem("city")) || [];
 
     cityfromLS.forEach((city) => {
-      var listCity = $("<li>");
-      listCity.text(city);
-      ul.append(listCity);
+      var newCityButton = $("<button>");
+      newCityButton
+        .text(city)
+        .attr(
+          "style",
+          "background-color: lightgrey; padding:10px; border: none; border-radius: 5px"
+        )
+        .addClass("new-city-btn");
+      citiesButtons.append(newCityButton);
     });
   }
 

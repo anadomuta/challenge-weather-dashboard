@@ -1,0 +1,11 @@
+.input-group {
+    display: block;
+}
+
+.input-group-append {
+    margin-top: 20px;
+}
+
+.new-city-btn {
+    margin-top: 20px;
+}

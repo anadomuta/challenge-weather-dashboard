@@ -2,9 +2,6 @@ $(document).ready(function () {
   var searchButton = $("#search-button");
   var cityInput = $("#search-input");
   var citiesButtons = $("#history");
-  //   var ul = $("<ul>");
-
-  //   $("#history").append(ul);
 
   // Initialize Local Storage and Retrieve Cities from Local Storage
   function initLS() {
@@ -23,6 +20,7 @@ $(document).ready(function () {
     var city = cityInput.val();
     cityfromLS = initLS(city);
 
+    // Validation of city field
     if (city !== "") {
       cityfromLS.push(city);
       localStorage.setItem("city", JSON.stringify(cityfromLS));

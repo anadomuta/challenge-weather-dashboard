@@ -1,3 +1,7 @@
+.weather-header {
+    background-image: linear-gradient(to right, #3361BA, #210C4F);
+}
+
 .input-group {
     display: block;
 }
@@ -12,6 +16,7 @@
 
 #search-button {
     width: 100%;
+    background-color: #5098E6;
 }
 
 #search-input {

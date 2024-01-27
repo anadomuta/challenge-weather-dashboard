@@ -23,8 +23,10 @@ $(document).ready(function () {
     var city = cityInput.val();
     cityfromLS = initLS(city);
 
-    cityfromLS.push(city);
-    localStorage.setItem("city", JSON.stringify(cityfromLS));
+    if (city !== "") {
+      cityfromLS.push(city);
+      localStorage.setItem("city", JSON.stringify(cityfromLS));
+    }
   }
 
   // Display Cities from Local Storage

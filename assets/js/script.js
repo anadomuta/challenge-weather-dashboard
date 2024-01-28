@@ -45,6 +45,7 @@ $(document).ready(function () {
         return response.json();
       })
       .then(function (data) {
+        renderForecast(data.coord.lat, data.coord.lon);
         console.log(data);
 
         // Display current weather conditions for selected city
@@ -90,14 +91,16 @@ $(document).ready(function () {
   renderCities();
 
   // Display 5 day forecast for selected city
-  function renderForecast(event) {
-    event.preventDefault();
-
-    saveCity();
+  function renderForecast(lat, lon) {
+    // event.preventDefault();
 
     var queryURLForecast =
-      "https://api.openweathermap.org/data/2.5/forecast?" +
-      cityInput.val() +
+      "https://api.openweathermap.org/data/2.5/forecast?lat=" +
+      lat +
+      "&lon=" +
+      lon +
+      "&units=metric" +
+      "&appid=" +
       APIKey;
 
     fetch(queryURLForecast)
@@ -108,10 +111,11 @@ $(document).ready(function () {
         console.log(data);
 
         // Transfer content to HTML
-        weatherForecast.HTML("<h5>" + "5-Day Forecast: ");
+        weatherForecast.html("<h5>" + "5-Day Forecast: ");
       });
   }
 
-  // Attach the saveCity function to the Click Event
+  // Attach the function to save the city name, display current weather and 5-day forecast to the Click Event
   searchButton.on("click", saveCity);
+  //   searchButton.on("click", renderForecast);
 });

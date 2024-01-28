@@ -51,7 +51,6 @@ $(document).ready(function () {
         return response.json();
       })
       .then(function (data) {
-        console.log(data);
         renderForecast(data.coord.lat, data.coord.lon);
 
         // Display current weather conditions for selected city
@@ -60,10 +59,10 @@ $(document).ready(function () {
         var todayIcon = `<img src="https://openweathermap.org/img/wn/${weatherTodayIcon}@2x.png"/>`;
         weatherToday.append(todayIcon);
         weatherToday.html(
-          "<h3> " + city + " (" + currentDate + ")" + todayIcon
+          "<h3><b> " + city + " (" + currentDate + ") </b>" + todayIcon
         );
 
-        //Temperature
+        // Temperature
         var tempCelsius = $("<p>");
         var tempInCelsius = data.main.temp;
         tempCelsius.text("Temp: " + tempInCelsius.toFixed(2) + "°C");
@@ -123,7 +122,7 @@ $(document).ready(function () {
         return response.json();
       })
       .then(function (data) {
-        weatherForecast.html("<h5>" + "5-Day Forecast: ");
+        weatherForecast.html("<h5><b>" + "5-Day Forecast: </b>");
 
         for (let i = 7; i < data.list.length; i += 7) {
           var forecastItem = data.list[i];

@@ -132,8 +132,8 @@ $(document).ready(function () {
           var forecastCardTemp = forecastItem.main.temp;
           var forecastCardWind = forecastItem.wind.speed;
           var forecastCardHumidity = forecastItem.main.humidity;
-          var forecastCard = `<div class="card" style="width: 18rem;">
-            <div class="card-body">
+          var forecastCard = `<div class="card border border-white" style="width: 20%;">
+            <div class="card-body text-white" style="background-color: #2D3E50">
               <h5 class="card-title">${forecastCardDate}</h5>
               <p class="card-text"><img src="https://openweathermap.org/img/wn/${forecastCardIcon}@2x.png"/></p>
               <p class="card-text">Temp: ${forecastCardTemp} °C</p>

@@ -51,11 +51,17 @@ $(document).ready(function () {
         return response.json();
       })
       .then(function (data) {
+        console.log(data);
         renderForecast(data.coord.lat, data.coord.lon);
 
         // Display current weather conditions for selected city
         weatherToday.removeClass("d-none");
-        weatherToday.html("<h3> " + city + " (" + currentDate + ")");
+        var weatherTodayIcon = data.weather[0].icon;
+        var todayIcon = `<img src="https://openweathermap.org/img/wn/${weatherTodayIcon}@2x.png"/>`;
+        weatherToday.append(todayIcon);
+        weatherToday.html(
+          "<h3> " + city + " (" + currentDate + ")" + todayIcon
+        );
 
         //Temperature
         var tempCelsius = $("<p>");

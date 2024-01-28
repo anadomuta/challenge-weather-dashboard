@@ -8,7 +8,7 @@ $(document).ready(function () {
   var currentDate = dayjs().format("DD/MM/YYYY");
 
   // Initialize Local Storage and Retrieve Cities from Local Storage
-  function initLS() {
+  function updateLS() {
     var cityfromLS = localStorage.getItem("city");
     if (cityfromLS === null || cityfromLS === undefined) {
       cityfromLS = [];
@@ -20,11 +20,10 @@ $(document).ready(function () {
   }
 
   // Save City upon Button Click
-  function saveCity(event) {
+  function getWeather(event, city) {
     event.preventDefault();
 
-    var city = cityInput.val();
-    cityfromLS = initLS(city);
+    var cityfromLS = updateLS(city);
 
     // Validation of city field
     var isCityInHistory = cityfromLS.includes(city);
@@ -35,6 +34,10 @@ $(document).ready(function () {
       renderCities();
     }
 
+    fetchCurrentWeather(city);
+  }
+
+  function fetchCurrentWeather(city) {
     // Building the query URL to get current temperature in Celsius
     var queryURL =
       "https://api.openweathermap.org/data/2.5/weather?q=" +
@@ -49,12 +52,10 @@ $(document).ready(function () {
       })
       .then(function (data) {
         renderForecast(data.coord.lat, data.coord.lon);
-        console.log(data);
 
         // Display current weather conditions for selected city
-
-        // Transfer content to HTML
-        weatherToday.html("<h3> " + cityInput.val() + " (" + currentDate + ")");
+        weatherToday.removeClass("d-none");
+        weatherToday.html("<h3> " + city + " (" + currentDate + ")");
 
         //Temperature
         var tempCelsius = $("<p>");
@@ -77,8 +78,9 @@ $(document).ready(function () {
   // Display Cities from Local Storage
   function renderCities() {
     citiesButtons.empty();
-    cityfromLS = JSON.parse(localStorage.getItem("city")) || [];
+    var cityfromLS = JSON.parse(localStorage.getItem("city")) || [];
 
+    // Iterate through local storage and render buttons for cities
     cityfromLS.forEach((city) => {
       var newCityButton = $("<button>");
       newCityButton
@@ -89,6 +91,11 @@ $(document).ready(function () {
         )
         .addClass("new-city-btn");
       citiesButtons.append(newCityButton);
+      newCityButton.on("click", function (event) {
+        var cityName = $(event.currentTarget).text();
+
+        getWeather(event, cityName);
+      });
     });
   }
 
@@ -96,8 +103,6 @@ $(document).ready(function () {
 
   // Display 5 day forecast for selected city
   function renderForecast(lat, lon) {
-    // event.preventDefault();
-
     var queryURLForecast =
       "https://api.openweathermap.org/data/2.5/forecast?lat=" +
       lat +
@@ -116,7 +121,6 @@ $(document).ready(function () {
 
         for (let i = 7; i < data.list.length; i += 7) {
           var forecastItem = data.list[i];
-          console.log(forecastItem);
           var forecastCardDate = forecastItem.dt_txt.split(" ")[0];
           var forecastCardIcon = forecastItem.weather[0].icon;
           var forecastCardTemp = forecastItem.main.temp;
@@ -133,13 +137,13 @@ $(document).ready(function () {
           </div>`;
           weatherForecast.append(forecastCard);
         }
-
-        // Transfer content to HTML
-        // weatherForecast.html("<h5>" + "5-Day Forecast: ");
       });
   }
 
   // Attach the function to save the city name, display current weather and 5-day forecast to the Click Event
-  searchButton.on("click", saveCity);
-  //   searchButton.on("click", renderForecast);
+  searchButton.on("click", function (event) {
+    var cityVal = cityInput.val();
+
+    getWeather(event, cityVal);
+  });
 });

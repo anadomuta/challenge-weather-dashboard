@@ -4,7 +4,7 @@ $(document).ready(function () {
   var citiesButtons = $("#history");
   var APIKey = "8fa17f3bf5819b35e5514a16ea6de259";
   var weatherToday = $("#today");
-  //   var weatherForecast = $("#forecast");
+  var weatherForecast = $("#forecast");
   var currentDate = dayjs().format("DD/MM/YYYY");
 
   // Initialize Local Storage and Retrieve Cities from Local Storage
@@ -32,7 +32,7 @@ $(document).ready(function () {
       localStorage.setItem("city", JSON.stringify(cityfromLS));
     }
 
-    // Building the query URL to get temperature in Celsius
+    // Building the query URL to get current temperature in Celsius
     var queryURL =
       "https://api.openweathermap.org/data/2.5/weather?q=" +
       city.trim() +
@@ -46,17 +46,23 @@ $(document).ready(function () {
       })
       .then(function (data) {
         console.log(data);
+
+        // Display current weather conditions for selected city
+
         // Transfer content to HTML
         weatherToday.html("<h3> " + cityInput.val() + " (" + currentDate + ")");
 
+        //Temperature
         var tempCelsius = $("<p>");
         var tempInCelsius = data.main.temp;
         tempCelsius.text("Temp: " + tempInCelsius.toFixed(2) + "°C");
 
+        // Wind conditions
         var wind = $("<p>");
         var windInKPH = data.wind.speed * 3.6;
         wind.text("Wind: " + windInKPH.toFixed(2) + " KPH");
 
+        // Humidity conditions
         var humidity = $("<p>").text("Humidity: " + data.main.humidity + "%");
 
         // Append to the HTML container
@@ -83,8 +89,28 @@ $(document).ready(function () {
 
   renderCities();
 
-  // Display current weather for selected city
-  function renderCurrentWeather() {}
+  // Display 5 day forecast for selected city
+  function renderForecast(event) {
+    event.preventDefault();
+
+    saveCity();
+
+    var queryURLForecast =
+      "https://api.openweathermap.org/data/2.5/forecast?" +
+      cityInput.val() +
+      APIKey;
+
+    fetch(queryURLForecast)
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (data) {
+        console.log(data);
+
+        // Transfer content to HTML
+        weatherForecast.HTML("<h5>" + "5-Day Forecast: ");
+      });
+  }
 
   // Attach the saveCity function to the Click Event
   searchButton.on("click", saveCity);

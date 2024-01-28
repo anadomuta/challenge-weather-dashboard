@@ -113,14 +113,18 @@ $(document).ready(function () {
         for (let i = 7; i < data.list.length; i += 7) {
           var forecastItem = data.list[i];
           console.log(forecastItem);
-          var forecastCard = `
-          <div class="card" style="width: 18rem;">
+          var forecastCardDate = forecastItem.dt_txt.split(" ")[0];
+          var forecastCardIcon = forecastItem.weather[0].icon;
+          var forecastCardTemp = forecastItem.main.temp;
+          var forecastCardWind = forecastItem.wind.speed;
+          var forecastCardHumidity = forecastItem.main.humidity;
+          var forecastCard = `<div class="card" style="width: 18rem;">
             <div class="card-body">
-              <h5 class="card-title">${forecastItem.dt_txt}</h5>
-              <p class="card-text">Icon</p>
-              <p class="card-text">Temp</p>
-              <p class="card-text">Wind</p>
-              <p class="card-text">Humidity</p>
+              <h5 class="card-title">${forecastCardDate}</h5>
+              <p class="card-text"><img src="https://openweathermap.org/img/wn/${forecastCardIcon}@2x.png"/></p>
+              <p class="card-text">Temp: ${forecastCardTemp} °C</p>
+              <p class="card-text">Wind: ${forecastCardWind} KPH</p>
+              <p class="card-text">Humidity: ${forecastCardHumidity} %</p>
             </div>
           </div>`;
           weatherForecast.append(forecastCard);

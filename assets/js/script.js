@@ -5,6 +5,7 @@ $(document).ready(function () {
   var APIKey = "8fa17f3bf5819b35e5514a16ea6de259";
   var weatherToday = $("#today");
   //   var weatherForecast = $("#forecast");
+  var currentDate = dayjs().format("DD/MM/YYYY");
 
   // Initialize Local Storage and Retrieve Cities from Local Storage
   function initLS() {
@@ -46,7 +47,7 @@ $(document).ready(function () {
       .then(function (data) {
         console.log(data);
         // Transfer content to HTML
-        weatherToday.html("<h3>" + cityInput.val());
+        weatherToday.html("<h3> " + cityInput.val() + " (" + currentDate + ")");
 
         var tempCelsius = $("<p>");
         var tempInCelsius = data.main.temp;
@@ -54,8 +55,8 @@ $(document).ready(function () {
 
         var wind = $("<p>");
         var windInKPH = data.wind.speed * 3.6;
-
         wind.text("Wind: " + windInKPH.toFixed(2) + " KPH");
+
         var humidity = $("<p>").text("Humidity: " + data.main.humidity + "%");
 
         // Append to the HTML container

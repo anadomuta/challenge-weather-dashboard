@@ -108,10 +108,26 @@ $(document).ready(function () {
         return response.json();
       })
       .then(function (data) {
-        console.log(data);
+        weatherForecast.html("<h5>" + "5-Day Forecast: ");
+
+        for (let i = 7; i < data.list.length; i += 7) {
+          var forecastItem = data.list[i];
+          console.log(forecastItem);
+          var forecastCard = `
+          <div class="card" style="width: 18rem;">
+            <div class="card-body">
+              <h5 class="card-title">${forecastItem.dt_txt}</h5>
+              <p class="card-text">Icon</p>
+              <p class="card-text">Temp</p>
+              <p class="card-text">Wind</p>
+              <p class="card-text">Humidity</p>
+            </div>
+          </div>`;
+          weatherForecast.append(forecastCard);
+        }
 
         // Transfer content to HTML
-        weatherForecast.html("<h5>" + "5-Day Forecast: ");
+        // weatherForecast.html("<h5>" + "5-Day Forecast: ");
       });
   }
 

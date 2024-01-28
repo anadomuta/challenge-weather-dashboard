@@ -93,7 +93,7 @@ $(document).ready(function () {
         .text(city)
         .attr(
           "style",
-          "background-color: lightgrey; padding:10px; border: none; border-radius: 5px"
+          "background-color: #AEAEAE; padding:10px; border: none; border-radius: 5px"
         )
         .addClass("new-city-btn");
       citiesButtons.append(newCityButton);
@@ -128,13 +128,20 @@ $(document).ready(function () {
         for (let i = 7; i < data.list.length; i += 7) {
           var forecastItem = data.list[i];
           var forecastCardDate = forecastItem.dt_txt.split(" ")[0];
+          var forecastDateItems = forecastCardDate.split("-");
+          var formattedDate =
+            forecastDateItems[2] +
+            "/" +
+            forecastDateItems[1] +
+            "/" +
+            forecastDateItems[0];
           var forecastCardIcon = forecastItem.weather[0].icon;
           var forecastCardTemp = forecastItem.main.temp;
           var forecastCardWind = forecastItem.wind.speed;
           var forecastCardHumidity = forecastItem.main.humidity;
           var forecastCard = `<div class="card border border-white" style="width: 20%;">
             <div class="card-body text-white" style="background-color: #2D3E50">
-              <h5 class="card-title">${forecastCardDate}</h5>
+              <h5 class="card-title">${formattedDate}</h5>
               <p class="card-text"><img src="https://openweathermap.org/img/wn/${forecastCardIcon}@2x.png"/></p>
               <p class="card-text">Temp: ${forecastCardTemp} °C</p>
               <p class="card-text">Wind: ${forecastCardWind} KPH</p>

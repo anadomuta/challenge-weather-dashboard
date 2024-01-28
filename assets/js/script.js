@@ -27,9 +27,12 @@ $(document).ready(function () {
     cityfromLS = initLS(city);
 
     // Validation of city field
-    if (city !== "") {
+    var isCityInHistory = cityfromLS.includes(city);
+
+    if (city !== "" && !isCityInHistory) {
       cityfromLS.push(city);
       localStorage.setItem("city", JSON.stringify(cityfromLS));
+      renderCities();
     }
 
     // Building the query URL to get current temperature in Celsius
@@ -73,6 +76,7 @@ $(document).ready(function () {
 
   // Display Cities from Local Storage
   function renderCities() {
+    citiesButtons.empty();
     cityfromLS = JSON.parse(localStorage.getItem("city")) || [];
 
     cityfromLS.forEach((city) => {

@@ -5,13 +5,13 @@ $(document).ready(function () {
   var APIKey = "8fa17f3bf5819b35e5514a16ea6de259";
   var weatherToday = $("#today");
   var weatherForecast = $("#forecast");
-  var currentDate = dayjs().format("DD/MM/YYYY");
+  var currentDate = dayjs().format("DD/MM/YYYY"); // get current date from Dayjs library
 
-  // Initialize Local Storage and Retrieve Cities from Local Storage
+  // Initialize Local Storage (LS) and Retrieve Cities from Local Storage
   function updateLS() {
     var cityfromLS = localStorage.getItem("city");
     if (cityfromLS === null || cityfromLS === undefined) {
-      cityfromLS = [];
+      cityfromLS = []; // create empty array if no cities in LS
       localStorage.setItem("city", JSON.stringify(cityfromLS));
     } else {
       cityfromLS = JSON.parse(cityfromLS);
@@ -19,11 +19,11 @@ $(document).ready(function () {
     return cityfromLS;
   }
 
-  // Save City upon Button Click
+  // Save City upon button click
   function getWeather(event, city) {
     event.preventDefault();
 
-    var cityfromLS = updateLS(city);
+    var cityfromLS = updateLS(city); // retrieve cities from LS
 
     // Validation of city field
     var isCityInHistory = cityfromLS.includes(city);
@@ -37,8 +37,8 @@ $(document).ready(function () {
     fetchCurrentWeather(city);
   }
 
+  // Fetch current weather for a given city
   function fetchCurrentWeather(city) {
-    // Building the query URL to get current temperature in Celsius
     var queryURL =
       "https://api.openweathermap.org/data/2.5/weather?q=" +
       city.trim() +
@@ -62,7 +62,7 @@ $(document).ready(function () {
           "<h3><b> " + city + " (" + currentDate + ") </b>" + todayIcon
         );
 
-        // Temperature
+        // Temperature conditions
         var tempCelsius = $("<p>");
         var tempInCelsius = data.main.temp;
         tempCelsius.text("Temp: " + tempInCelsius.toFixed(2) + "°C");
@@ -75,7 +75,7 @@ $(document).ready(function () {
         // Humidity conditions
         var humidity = $("<p>").text("Humidity: " + data.main.humidity + "%");
 
-        // Append to the HTML container
+        // Append to HTML container
         weatherToday.append(tempCelsius, wind, humidity);
       });
   }
@@ -85,7 +85,7 @@ $(document).ready(function () {
     citiesButtons.empty();
     var cityfromLS = JSON.parse(localStorage.getItem("city")) || [];
 
-    // Iterate through local storage and render buttons for cities
+    // Iterate through cities and create buttons
     cityfromLS.forEach((city) => {
       var newCityButton = $("<button>");
       newCityButton
@@ -96,6 +96,8 @@ $(document).ready(function () {
         )
         .addClass("new-city-btn");
       citiesButtons.append(newCityButton);
+
+      // Click event listener that triggers the getWeather function with the corresponding city name
       newCityButton.on("click", function (event) {
         var cityName = $(event.currentTarget).text();
 
@@ -106,7 +108,7 @@ $(document).ready(function () {
 
   renderCities();
 
-  // Display 5 day forecast for selected city
+  // Display 5 day forecast for selected city by taking the lat and lon parameters
   function renderForecast(lat, lon) {
     var queryURLForecast =
       "https://api.openweathermap.org/data/2.5/forecast?lat=" +
@@ -124,16 +126,19 @@ $(document).ready(function () {
       .then(function (data) {
         weatherForecast.html("<h5><b>" + "5-Day Forecast: </b>");
 
+        // Iterate through the 3h forecast and creating forecast cards by skipping every 7th element in the data.list array, to get daily forecast
         for (let i = 7; i < data.list.length; i += 7) {
           var forecastItem = data.list[i];
-          var forecastCardDate = forecastItem.dt_txt.split(" ")[0];
-          var forecastDateItems = forecastCardDate.split("-");
-          var formattedDate =
+
+          var forecastCardDate = forecastItem.dt_txt.split(" ")[0]; // extract only date portion
+          var forecastDateItems = forecastCardDate.split("-"); // split extracted date into array
+          var formattedDate = // rearrange elements of array
             forecastDateItems[2] +
             "/" +
             forecastDateItems[1] +
             "/" +
             forecastDateItems[0];
+
           var forecastCardIcon = forecastItem.weather[0].icon;
           var forecastCardTemp = forecastItem.main.temp;
           var forecastCardWind = forecastItem.wind.speed;
@@ -152,9 +157,9 @@ $(document).ready(function () {
       });
   }
 
-  // Attach the function to save the city name, display current weather and 5-day forecast to the Click Event
+  // Trigger getWeather function upon button click
   searchButton.on("click", function (event) {
-    var cityVal = cityInput.val();
+    var cityVal = cityInput.val(); // retrieve value entered in input field
 
     getWeather(event, cityVal);
   });

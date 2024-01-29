@@ -15,7 +15,7 @@ The application has the following functionalities:
 
 ## Usage
 
-The webpage can be accessed using this URL: to follow
+The webpage can be accessed using this URL: https://anadomuta.github.io/challenge-weather-dashboard/
 
 The screenshots below display an overview of the application.
 
